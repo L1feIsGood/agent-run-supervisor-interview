@@ -1,0 +1,291 @@
+[
+  {
+    "run_id": "run-001",
+    "task_id": "TASK-101",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "ETIMEDOUT",
+    "operation_kind": "read",
+    "request_sent": true,
+    "failure_signature": "gitlab:get_merge_request:ETIMEDOUT",
+    "requested_by": "user-17",
+    "tool_name": "gitlab.get_merge_request",
+    "message": "The GitLab request timed out before response headers were received.",
+    "evidence": {
+      "request": {
+        "method": "GET",
+        "resource": "/projects/42/merge_requests/184",
+        "timeout_seconds": 30
+      },
+      "response_headers_received": false,
+      "tool_declared_side_effects": false,
+      "workspace_changed": false
+    }
+  },
+  {
+    "run_id": "run-002",
+    "task_id": "TASK-102",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "RESULT_SCHEMA_MISMATCH",
+    "operation_kind": "none",
+    "request_sent": false,
+    "failure_signature": "implementation-result:$.status:required",
+    "requested_by": "user-24",
+    "tool_name": null,
+    "message": "The worker produced a JSON object, but result-contract validation failed.",
+    "evidence": {
+      "result_contract": "contracts/worker-result-v1.schema.json",
+      "agent_output": {
+        "message": "Merge request !184 created"
+      },
+      "validation_errors": [
+        "$.status: required property is missing"
+      ],
+      "output_parse_error": null
+    }
+  },
+  {
+    "run_id": "run-003-a",
+    "task_id": "TASK-103",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "PROCESS_EXIT_1",
+    "operation_kind": "read",
+    "request_sent": false,
+    "failure_signature": "tests:OrderPolicyTests:expected-review",
+    "requested_by": "user-17",
+    "tool_name": "shell",
+    "message": "The implementation test command exited with code 1 on the first attempt.",
+    "evidence": {
+      "command": "python -m unittest tests.test_order_policy -v",
+      "test": "OrderPolicyTests.expected_review",
+      "assertion": {
+        "expected": "REVIEW",
+        "actual": "APPROVE"
+      },
+      "implementation_revision": "candidate-change-1",
+      "stdout_excerpt": "expected REVIEW, got APPROVE"
+    }
+  },
+  {
+    "run_id": "run-003-b",
+    "task_id": "TASK-103",
+    "attempt": 2,
+    "status": "failed",
+    "error_code": "PROCESS_EXIT_1",
+    "operation_kind": "read",
+    "request_sent": false,
+    "failure_signature": "tests:OrderPolicyTests:expected-review",
+    "requested_by": "user-17",
+    "tool_name": "shell",
+    "message": "After a second implementation revision, the same test produced the same assertion failure.",
+    "evidence": {
+      "command": "python -m unittest tests.test_order_policy -v",
+      "test": "OrderPolicyTests.expected_review",
+      "assertion": {
+        "expected": "REVIEW",
+        "actual": "APPROVE"
+      },
+      "implementation_revision": "candidate-change-2",
+      "previous_run_id": "run-003-a",
+      "stdout_excerpt": "expected REVIEW, got APPROVE"
+    }
+  },
+  {
+    "run_id": "run-004",
+    "task_id": "TASK-104",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "INPUT_REQUIRED",
+    "operation_kind": "none",
+    "request_sent": false,
+    "failure_signature": "input:retention_period:missing",
+    "requested_by": "user-31",
+    "tool_name": null,
+    "message": "No retention_period value was found in the task, service defaults or product documentation.",
+    "evidence": {
+      "task_excerpt": "Automatically delete generated reports after their retention period expires.",
+      "unresolved_field": "retention_period",
+      "task_value": null,
+      "service_default": null,
+      "product_documentation_value": null,
+      "affected_artifact": "generated customer reports"
+    }
+  },
+  {
+    "run_id": "run-005",
+    "task_id": "TASK-105",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "HTTP_403",
+    "operation_kind": "write",
+    "request_sent": true,
+    "failure_signature": "gitlab:merge:HTTP_403",
+    "requested_by": "user-09",
+    "tool_name": "gitlab.merge",
+    "message": "GitLab accepted the connection but rejected the merge request operation with HTTP 403.",
+    "evidence": {
+      "request": {
+        "method": "PUT",
+        "resource": "/projects/42/merge_requests/184/merge",
+        "actor": "service-account-dev-agent"
+      },
+      "response": {
+        "status": 403,
+        "body": "insufficient_scope"
+      },
+      "read_access_check": "passed",
+      "merge_request_state_after_response": "opened"
+    }
+  },
+  {
+    "run_id": "run-006",
+    "task_id": "TASK-106",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "ECONNRESET",
+    "operation_kind": "write",
+    "request_sent": true,
+    "failure_signature": "redmine:update_issue:ECONNRESET",
+    "requested_by": "user-31",
+    "tool_name": "redmine.update_issue",
+    "message": "The connection was reset after the issue update body was sent and before response headers arrived.",
+    "evidence": {
+      "request": {
+        "method": "PUT",
+        "resource": "/issues/106.json",
+        "body": {
+          "status": "QA"
+        },
+        "idempotency_key": null
+      },
+      "request_body_sent": true,
+      "response_headers_received": false,
+      "issue_state_after_failure": "not_checked",
+      "tool_idempotency_contract": "not_declared"
+    }
+  },
+  {
+    "run_id": "run-007",
+    "task_id": "TASK-107",
+    "attempt": 3,
+    "status": "failed",
+    "error_code": "LIMIT_REACHED",
+    "operation_kind": "none",
+    "request_sent": false,
+    "failure_signature": "codex:LIMIT_REACHED:tokens",
+    "requested_by": "user-24",
+    "tool_name": null,
+    "message": "The third agent run reached its configured token limit before emitting a final result.",
+    "evidence": {
+      "configured_token_limit": 60000,
+      "observed_tokens": 60000,
+      "final_result_emitted": false,
+      "last_recorded_phase": "reviewing test failures",
+      "previous_attempts": [
+        "run-007-attempt-1",
+        "run-007-attempt-2"
+      ],
+      "previous_attempt_outcomes": [
+        "LIMIT_REACHED",
+        "LIMIT_REACHED"
+      ]
+    }
+  },
+  {
+    "run_id": "run-008",
+    "task_id": "TASK-108",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "ECONNREFUSED",
+    "operation_kind": "read",
+    "request_sent": false,
+    "failure_signature": "git:fetch:ECONNREFUSED",
+    "requested_by": "user-17",
+    "tool_name": "git.fetch",
+    "message": "The TCP connection was refused before git fetch could start protocol exchange.",
+    "evidence": {
+      "command": "git fetch origin main",
+      "remote": "https://git.example.test/products/orders.git",
+      "connection_stage": "tcp_connect",
+      "request_reached_remote": false,
+      "local_head_before": "5a23d71",
+      "local_head_after": "5a23d71",
+      "remote_health": "not_checked"
+    }
+  },
+  {
+    "run_id": "run-009",
+    "task_id": "TASK-109",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "CHECK_FAILED",
+    "operation_kind": "write",
+    "request_sent": false,
+    "failure_signature": "migration-check:DROP_COLUMN:rows-present",
+    "requested_by": "user-31",
+    "tool_name": "migration.check",
+    "message": "Migration preflight stopped before execution after detecting data in a column scheduled for removal.",
+    "evidence": {
+      "statement": "ALTER TABLE customers DROP COLUMN customer_code",
+      "target_environment": "production",
+      "non_null_rows": 8142,
+      "migration_applied": false,
+      "rollback_script_present": false,
+      "approval_reference": null
+    }
+  },
+  {
+    "run_id": "run-010",
+    "task_id": "TASK-110",
+    "attempt": 1,
+    "status": "failed",
+    "error_code": "MULTIPLE_MATCHES",
+    "operation_kind": "none",
+    "request_sent": false,
+    "failure_signature": "routing:MULTIPLE_MATCHES:2",
+    "requested_by": "user-24",
+    "tool_name": "repository.resolve",
+    "message": "Repository resolution found two similarly ranked targets and no canonical product key in the task.",
+    "evidence": {
+      "task_excerpt": "Add CSV export to the weekly report screen.",
+      "canonical_product_key": null,
+      "matches": [
+        {
+          "repository": "products/reports",
+          "score": 0.87,
+          "matched_capability": "weekly report user interface"
+        },
+        {
+          "repository": "services/reports",
+          "score": 0.85,
+          "matched_capability": "weekly report generation and export"
+        }
+      ],
+      "repository_relation": "web product uses report service"
+    }
+  },
+  {
+    "run_id": "run-011",
+    "task_id": "TASK-111",
+    "attempt": 1,
+    "status": "success",
+    "error_code": null,
+    "operation_kind": "write",
+    "request_sent": true,
+    "failure_signature": null,
+    "requested_by": "user-17",
+    "tool_name": "gitlab.create_merge_request",
+    "message": "The implementation run completed and produced a validated final result.",
+    "evidence": {
+      "tests": {
+        "passed": 48,
+        "failed": 0
+      },
+      "merge_request": "https://git.example.test/products/orders/-/merge_requests/184",
+      "result_contract": "contracts/worker-result-v1.schema.json",
+      "result_validation": "passed"
+    }
+  }
+]
